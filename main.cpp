@@ -6,7 +6,7 @@ struct Test {
 };
 
 int main() {
-    Ship S(1,1,3,false);
-
+    Ship S(1,1,8,true);
+    std::cout << std::boolalpha << S.isSunk() << std::endl;
     std::cout << S;
 }

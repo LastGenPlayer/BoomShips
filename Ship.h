@@ -9,14 +9,15 @@
 class Coord {
 public:
     int x, y;
-    bool isHit;
+    bool isHit, isShip;
 
     Coord() = default;
 
-    Coord(int x, int y)
+    Coord(int x, int y, bool isShip)
         : x(x),
           y(y),
-          isHit(false) {
+          isHit(false),
+          isShip(isShip){
     }
 };
 
@@ -26,6 +27,7 @@ class Ship {
 public:
     Ship(int x, int y, int ship_length, bool is_horizontal);
     friend std::ostream & operator<<(std::ostream &os, const Ship &obj);
+    bool isSunk();
 };
 
 
