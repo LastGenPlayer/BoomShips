@@ -55,14 +55,14 @@ build CMakeFiles/BoomShips.dir/main.cpp.obj: CXX_COMPILER__BoomShips_unscanned_D
   OBJECT_DIR = CMakeFiles\BoomShips.dir
   OBJECT_FILE_DIR = CMakeFiles\BoomShips.dir
 
-build CMakeFiles/BoomShips.dir/ships.cpp.obj: CXX_COMPILER__BoomShips_unscanned_Debug C$:/Users/krist/CLionProjects/BoomShips/ships.cpp || cmake_object_order_depends_target_BoomShips
-  DEP_FILE = CMakeFiles\BoomShips.dir\ships.cpp.obj.d
+build CMakeFiles/BoomShips.dir/Ship.cpp.obj: CXX_COMPILER__BoomShips_unscanned_Debug C$:/Users/krist/CLionProjects/BoomShips/Ship.cpp || cmake_object_order_depends_target_BoomShips
+  DEP_FILE = CMakeFiles\BoomShips.dir\Ship.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\BoomShips.dir
   OBJECT_FILE_DIR = CMakeFiles\BoomShips.dir
 
-build CMakeFiles/BoomShips.dir/board.cpp.obj: CXX_COMPILER__BoomShips_unscanned_Debug C$:/Users/krist/CLionProjects/BoomShips/board.cpp || cmake_object_order_depends_target_BoomShips
-  DEP_FILE = CMakeFiles\BoomShips.dir\board.cpp.obj.d
+build CMakeFiles/BoomShips.dir/Board.cpp.obj: CXX_COMPILER__BoomShips_unscanned_Debug C$:/Users/krist/CLionProjects/BoomShips/Board.cpp || cmake_object_order_depends_target_BoomShips
+  DEP_FILE = CMakeFiles\BoomShips.dir\Board.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\BoomShips.dir
   OBJECT_FILE_DIR = CMakeFiles\BoomShips.dir
@@ -75,7 +75,7 @@ build CMakeFiles/BoomShips.dir/board.cpp.obj: CXX_COMPILER__BoomShips_unscanned_
 #############################################
 # Link the executable BoomShips.exe
 
-build BoomShips.exe: CXX_EXECUTABLE_LINKER__BoomShips_Debug CMakeFiles/BoomShips.dir/main.cpp.obj CMakeFiles/BoomShips.dir/ships.cpp.obj CMakeFiles/BoomShips.dir/board.cpp.obj
+build BoomShips.exe: CXX_EXECUTABLE_LINKER__BoomShips_Debug CMakeFiles/BoomShips.dir/main.cpp.obj CMakeFiles/BoomShips.dir/Ship.cpp.obj CMakeFiles/BoomShips.dir/Board.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\BoomShips.dir

@@ -5,6 +5,7 @@
 #ifndef BOOMSHIPS_SHIPS_H
 #define BOOMSHIPS_SHIPS_H
 #include <ostream>
+#include <vector>
 
 class Coord {
 public:
@@ -19,12 +20,18 @@ public:
           isHit(false),
           isShip(isShip){
     }
+
+    friend std::ostream &operator<<(std::ostream &os, const Coord &coord) {
+        os << "x: " << coord.x << " y: " << coord.y << " isHit: " << coord.isHit << " isShip: " << coord.isShip;
+        return os;
+    }
 };
 
 class Ship {
+public:
     int shipLength;
     std::vector<Coord> shipCoords;
-public:
+
     Ship(int x, int y, int ship_length, bool is_horizontal);
     friend std::ostream & operator<<(std::ostream &os, const Ship &obj);
     bool isSunk();

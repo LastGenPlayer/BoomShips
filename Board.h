@@ -5,9 +5,20 @@
 #ifndef BOOMSHIPS_BOARD_H
 #define BOOMSHIPS_BOARD_H
 
+#include <ostream>
+#include "Ship.h"
+
+
 
 class Board {
 
+    std::vector<Ship> Ships;
+    std::vector<Coord> coordid;
+    bool visible;
+
+public:
+    Board(const std::vector<Ship> &ships, bool visible);
+    friend std::ostream &operator<<(std::ostream &os, const Board &board);
 };
 
 
