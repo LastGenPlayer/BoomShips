@@ -4,7 +4,7 @@ project(BoomShips)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(BoomShips main.cpp
-        ships.cpp
-        ships.h
-        board.cpp
-        board.h)
+        Ships.cpp
+        Ships.h
+        Board.cpp
+        Board.h)

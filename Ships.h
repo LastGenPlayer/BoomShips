@@ -6,7 +6,7 @@
 #define BOOMSHIPS_SHIPS_H
 
 
-class ships {
+class Ships {
 
 };
 

@@ -6,7 +6,7 @@
 #define BOOMSHIPS_BOARD_H
 
 
-class board {
+class Board {
 
 };
 
