@@ -13,5 +13,4 @@ int main() {
     std::cout << a << '\n';
 
 
-    std::cout << a << '\n';
 }
