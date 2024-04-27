@@ -10,4 +10,6 @@ add_executable(BoomShips main.cpp
         Board.h
         Game.cpp
         Game.h
+        Coord.cpp
+        Coord.h
 )
