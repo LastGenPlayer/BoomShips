@@ -8,7 +8,7 @@
 
 class Coord {
 public:
-    int x, y;
+    unsigned int x, y;
     bool isHit, isShip;
 
     Coord();

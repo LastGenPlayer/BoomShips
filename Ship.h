@@ -16,6 +16,7 @@ public:
     Ship(int x, int y, int ship_length, bool is_horizontal);
     friend std::ostream & operator<<(std::ostream &os, const Ship &obj);
     bool isSunk();
+    bool onBoard();
 };
 
 

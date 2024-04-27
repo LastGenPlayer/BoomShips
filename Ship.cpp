@@ -38,3 +38,12 @@ bool Ship::isSunk() {
     return true;
 }
 
+bool Ship::onBoard() {
+    for (Coord P: this->shipCoords) {
+        if ((P.x > 10) || (P.y > 10)) {
+            return false;
+        }
+    }
+    return true;
+}
+
