@@ -17,4 +17,6 @@ int main() {
     Coord P1(3, 4, false);
     Coord P2(3, 4, false);
     Coord P3(3, 4, false);
+
+
 }
