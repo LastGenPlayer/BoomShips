@@ -8,10 +8,9 @@
 
 class Coord {
 public:
-    unsigned int x, y;
+    int x, y;
     bool isHit, isShip;
 
-    Coord();
     Coord(int x, int y, bool isShip);
     static bool isNeighbour(Coord P1, Coord P2);
     friend std::ostream &operator<<(std::ostream &os, const Coord &coord);
