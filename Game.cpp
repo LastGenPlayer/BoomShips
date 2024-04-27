@@ -37,7 +37,6 @@ std::string Game::randomCoord() {
 
 Game::Game() : board1(Board()),
     board2(Board()) {
-
     std::string sisend;
     for (;;) {
         std::cout << "Kas soovite automaatselt genereeritud lauda või ise luua (a/i)?\n";
