@@ -7,4 +7,7 @@ add_executable(BoomShips main.cpp
         Ship.cpp
         Ship.h
         Board.cpp
-        Board.h)
+        Board.h
+        Coords.h
+        Coords.cpp
+)
