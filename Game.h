@@ -15,6 +15,8 @@ public:
     Game();
     void selfBoard(std::string &sisend);
     void playGame();
+    void randomBoard();
+    static std::string randomCoord();
 };
 
 
