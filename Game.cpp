@@ -10,10 +10,11 @@ Game::Game() {
 
 
     int shipCount{0};
+    std::vector<Ship> boatsNhoes;
     while (shipCount < 10) {
         std::string sisend;
         std::cout << "Sisesta koordinaat laeva paigutamiseks (täht, number ja kas horisontaalselt (h) või vertikaalselt (v) nt A2h)\n";
         std::cin >>  sisend;
-        if ()
+        Ship ship = *new Ship(sisend);
     }
 }

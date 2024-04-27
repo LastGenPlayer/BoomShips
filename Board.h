@@ -18,10 +18,9 @@ class Board {
 
 public:
     Board(const std::vector<Ship> &ships, bool visible);
+    bool isPlaceable(Ship ship, std::vector<Ship> boats);
 
-    bool isPlaceable(Ship ship, bool horizontal);
     friend std::ostream &operator<<(std::ostream &os, const Board &board);
-
 };
 
 
