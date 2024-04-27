@@ -17,6 +17,8 @@ public:
     void playGame();
     void randomBoard();
     static std::string randomCoord();
+    void guessSpot(std::string koht);
+
 };
 
 

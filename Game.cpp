@@ -86,4 +86,11 @@ void Game::playGame() {
 
 }
 
+void Game::guessSpot(std::string koht) {
+    std::string tahed{"ABCDEFGHIJ"};
+    std::string num{"1234567890"};
+    int x = static_cast<int>(tahed.find(koht.at(0)));
+    int y = static_cast<int>(num.find(koht.at(1)));
+}
+
 
