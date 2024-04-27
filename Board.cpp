@@ -3,17 +3,27 @@
 //
 
 #include "Board.h"
+#include "Ship.h"
 
-Board::Board(const std::vector<Ship> &ships, bool visible) : Ships(ships), visible(visible) {
+Board::Board() {
     for (int y = 0; y < 10; y++) {
-        for (int x = 0; x < 10; ++x) {
+        for (int x = 0; x < 10; x++) {
             coordid.push_back(Coord(x, y, false));
+        }
+    }
+}
+
+Board::Board(std::vector<Ship> &ships, bool visible) : Ships(ships), visible(visible) {
+    if (coordid.empty()) {
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                coordid.push_back(Coord(x, y, false));
+            }
         }
     }
     for (Ship ship : ships) {
         for (Coord coord : ship.shipCoords) {
-            coordid.erase(coordid.begin() + coord.y*10 + coord.x);
-            coordid.insert(coordid.begin() + coord.y*10 + coord.x, coord);
+            coordid[coord.y*10 + coord.x] = coord;
         }
     }
 }
@@ -38,20 +48,17 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
             }
         }
     }
-
-    /**
     for (Coord asi : board.coordid) {
         os << asi << '\n';
     }
     return os;
-     **/
 }
 
-bool Board::isPlaceable(Ship ship, std::vector<Ship> boats) {
+bool Board::isPlaceable(Ship ship, const std::vector<Ship>& boats) {
     if (!ship.onBoard()) {
         return false;
     }
-    for (Ship boat : boats) {
+    for (const Ship& boat : boats) {
         for (Coord boatCoord : boat.shipCoords) {
             for (Coord shipCoord : ship.shipCoords) {
                 if (Coord::isNeighbour(boatCoord, shipCoord)) {
@@ -62,3 +69,5 @@ bool Board::isPlaceable(Ship ship, std::vector<Ship> boats) {
     }
     return true;
 }
+
+

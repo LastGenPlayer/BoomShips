@@ -4,7 +4,7 @@
 
 #ifndef BOOMSHIPS_SHIPS_H
 #define BOOMSHIPS_SHIPS_H
-#include "Coords.h"
+#include "Coord.h"
 #include <ostream>
 #include <vector>
 #include <string>
@@ -15,11 +15,11 @@ public:
     std::vector<Coord> shipCoords;
 
     Ship(int x, int y, int ship_length, bool is_horizontal);
-    Ship(std::string sisend);
+    Ship(std::string sisend, int lenght);
+    void shipMaker(int x, int y, int ship_length, bool is_horizontal);
     friend std::ostream & operator<<(std::ostream &os, const Ship &obj);
     bool onBoard();
     bool isSunk();
-    bool onBoard();
 };
 
 

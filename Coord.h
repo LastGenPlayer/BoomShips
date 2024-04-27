@@ -2,8 +2,8 @@
 // Created by Rain Verrev on 27.04.2024.
 //
 
-#ifndef COORDS_H
-#define COORDS_H
+#ifndef COORD_H
+#define COORD_H
 #include <iostream>
 
 class Coord {

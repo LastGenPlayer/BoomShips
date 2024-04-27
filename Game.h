@@ -13,7 +13,7 @@ public:
     Board board2;
 
     Game();
-
+    void playGame();
 };
 
 

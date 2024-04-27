@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Ship.h"
 #include "Board.h"
+#include "Game.h"
 
 
 int main() {
@@ -12,11 +13,5 @@ int main() {
     Board a(ships, true);
     std::cout << a << '\n';
 
-    std::cout << std::endl;
-
-    Coord P1(3, 4, false);
-    Coord P2(3, 4, false);
-    Coord P3(3, 4, false);
-
-
+    Game mang = *new Game();
 }

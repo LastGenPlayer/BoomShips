@@ -3,16 +3,34 @@
 //
 
 #include "Ship.h"
+#include "Coord.h"
+#include <iostream>
+#include <string>
 
 Ship::Ship(int x, int y, int ship_length, bool is_horizontal) : shipLength(ship_length) {
+    shipMaker(x, y, ship_length, is_horizontal);
+}
+
+
+Ship::Ship(std::string sisend, int lenght) {
+    std::string tahed{"ABCDEFGHIJ"};
+    int x = static_cast<int>(tahed.find(sisend.at(0)));
+    int y = static_cast<int>(sisend.at(1)); // A6h
+    bool hori = (sisend.at(2) == 'h');
+    shipMaker(x, y, lenght, hori);
+}
+
+
+void Ship::shipMaker(int x, int y, int ship_length, bool is_horizontal) {
     if (is_horizontal) {
         for (int i = 0; i < ship_length; i++) {
-            shipCoords.push_back(Coord(x + i, y, true));
+            Coord coord = Coord(x + i, y, true);
+            shipCoords.push_back(coord);
         }
-    }
-    else {
+    } else {
         for (int i = 0; i < ship_length; i++) {
-            shipCoords.push_back(Coord(x, y + i, true));
+            Coord coord = Coord(x, y + i, true);
+            shipCoords.push_back(coord);
         }
     }
 }
@@ -46,4 +64,3 @@ bool Ship::onBoard() {
     }
     return true;
 }
-
