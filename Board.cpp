@@ -46,3 +46,18 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
     return os;
      **/
 }
+
+bool Board::isPlaceable(Ship ship, bool horizontal) {
+    int x1{ship.shipCoords.at(0).x-1}, x2{ship.shipCoords.at(0).x + 1 + (ship.shipLength - 1)*horizontal};
+    int y1{ship.shipCoords.at(0).y-1}, y2{ship.shipCoords.at(0).y + 1 + (ship.shipLength - 1)*!horizontal};
+
+    if (!ship.onBoard()) {
+        return false;
+    }
+
+    for (Coord coord : coordid) {
+        if (coord.x >= x1 && coord.x <= x2 && coord.x >= y1 && coord.x <= y2 && coord.isShip)
+            return false;
+    }
+    return true;
+}
