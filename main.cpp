@@ -11,9 +11,4 @@ int main() {
     std::vector<Ship> ships{S, S2};
     Board a(ships, true);
     std::cout << a << '\n';
-
-
-
-
-
 }
