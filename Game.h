@@ -13,6 +13,7 @@ public:
     Board board2;
 
     Game();
+    void selfBoard(std::string &sisend);
     void playGame();
 };
 

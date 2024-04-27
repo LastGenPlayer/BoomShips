@@ -9,11 +9,18 @@
 
 Game::Game() : board1(Board()),
     board2(Board()) {
-    // AI generated board here
+    std::string sisend;
+    for (;;) {
+        std::cout << "Kas soovite automaatselt genereeritud lauda või ise luua (a/i)?\n";
+        std::cin >> sisend;
+        selfBoard(sisend);
+        break;
+    }
+}
 
+void Game::selfBoard(std::string &sisend) {
     for (int lenght = 4; lenght > 0; lenght--) {
         for (int count = 5-lenght; count > 0;) {
-            std::string sisend;
             std::cout << "Sisesta koordinaat " << lenght << "x1 laeva paigutamiseks (täht, number ja kas horisontaalselt (h) või vertikaalselt (v) nt A2h)\n";
             std::cin >>  sisend;
             if (sisend.size() == 3) {
@@ -27,6 +34,7 @@ Game::Game() : board1(Board()),
         }
     }
 }
+
 
 void Game::playGame() {
 
