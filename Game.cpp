@@ -35,9 +35,11 @@ std::string Game::randomCoord() {
 }
 
 
-Game::Game() : board1(Board()),
-    board2(Board()) {
+Game::Game() : board1(new Board()),
+    board2(new Board())
+    {
     std::string sisend;
+    randomBoard(board2);
     for (;;) {
         std::cout << "Kas soovite automaatselt genereeritud lauda või ise luua (a/i)?\n";
         std::cin >> sisend;
@@ -46,7 +48,7 @@ Game::Game() : board1(Board()),
             break;
         }
         if (sisend == "a") {
-            randomBoard();
+            randomBoard(board1);
             break;
         }
     }
@@ -59,8 +61,8 @@ void Game::selfBoard(std::string &sisend) {
             std::cin >>  sisend;
             if (sisend.size() == 3) {
                 Ship ship = *new Ship(sisend, lenght);
-                if (Board::isPlaceable(ship, board1.Ships)) {
-                    board1.addShip(ship);
+                if (Board::isPlaceable(ship, board1->Ships)) {
+                    board1->addShip(ship);
                     count--;
                     std::cout << board1;
                 }
@@ -69,28 +71,61 @@ void Game::selfBoard(std::string &sisend) {
     }
 }
 
-void Game::randomBoard() {
+void Game::randomBoard(Board* board) {
     for (int lenght = 4; lenght > 0; lenght--) {
         for (int count = 5-lenght; count > 0;) {
             Ship ship = *new Ship(randomCoord(), lenght);
-            if (Board::isPlaceable(ship, board1.Ships)) {
-                board1.addShip(ship);
+            if (Board::isPlaceable(ship, (*board).Ships)) {
+                (*board).addShip(ship);
                 count--;
             }
         }
     }
-    std::cout << board1;
 }
 
 void Game::playGame() {
+    this->board2guess = new Board(board2->Ships, false);
+    bool gamerMoment{true};
+    while (gamerMoment) {
+        while(true) {
+            std::cout << *board2guess << '\n';
+            std::cout << *board2;
+            std::string sisend;
+            std::cout << "Paku auku:\n";
+            std::cin >> sisend;
 
+            std::pair<int, int> guess = Board::guessSpot(sisend);
+
+            if (sisend.length() == 2 && board2->isHittable(guess)) {
+                board2->FIREINTHEHOLE(guess);
+                board2guess->FIREINTHEHOLE(guess);
+            }
+            else {
+                break;
+            }
+
+            int board2ships{0};
+            for (Ship ship : board2->Ships) {
+                std::cout << ship << '\n';
+                if (!ship.isSunk()) {
+
+                }
+                else {
+                    Board::sinkShip(*board2, ship);
+                    Board::sinkShip(*board2guess, ship);
+                    board2ships++;
+                }
+            }
+            if (board2ships == 10) {
+                gamerMoment = false;
+                break;
+            }
+        }
+    }
+    std::cout << "Mäng läbi!";
 }
 
-void Game::guessSpot(std::string koht) {
-    std::string tahed{"ABCDEFGHIJ"};
-    std::string num{"1234567890"};
-    int x = static_cast<int>(tahed.find(koht.at(0)));
-    int y = static_cast<int>(num.find(koht.at(1)));
-}
+
+
 
 

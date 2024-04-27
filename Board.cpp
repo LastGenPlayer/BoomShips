@@ -5,7 +5,7 @@
 #include "Board.h"
 #include "Ship.h"
 
-Board::Board() {
+Board::Board() : visible(true) {
     for (int y = 0; y < 10; y++) {
         for (int x = 0; x < 10; x++) {
             coordid.push_back(Coord(x, y, false));
@@ -30,21 +30,27 @@ Board::Board(std::vector<Ship> &ships, bool visible) : Ships(ships), visible(vis
 
 std::ostream &operator<<(std::ostream &os, const Board &board) {
     int i{0};
-    if (!board.visible) {
-        os << "   A B C D E F G H I J\n1  ";
-        for (Coord asi : board.coordid) {
-            if (asi.isShip) {
-                os << "@ ";
-            }
-            else {
-                os << ". ";
-            }
-            i++;
-            if (i%10 == 0 && i/10 < 10){
-                os << '\n' << ((i/10)+1)%10 << "  ";
-            }
+
+    os << "   A B C D E F G H I J\n1  ";
+    for (Coord asi : board.coordid) {
+        if (asi.isShip && !asi.isHit && board.visible) {
+            os << "# ";
+        }
+        else if (asi.isShip && asi.isHit) {
+            os << "@ ";
+        }
+        else if (!asi.isShip && asi.isHit) {
+            os << "* ";
+        }
+        else {
+            os << ". ";
+        }
+        i++;
+        if (i%10 == 0 && i/10 < 10){
+            os << '\n' << ((i/10)+1)%10 << "  ";
         }
     }
+
     os << '\n';
     /*
     for (Coord asi : board.coordid) {
@@ -73,7 +79,51 @@ bool Board::isPlaceable(Ship ship, const std::vector<Ship>& boats) {
 void Board::addShip(Ship ship) {
     this->Ships.push_back(ship);
     for (Coord coord : ship.shipCoords) {
-        coordid[coord.y*10 + coord.x] = coord;
+        (coordid[coord.y*10 + coord.x]) = coord;
+    }
+}
+
+std::pair<int, int> Board::guessSpot(std::string sisend) {
+    std::string tahed{"ABCDEFGHIJ"};
+    std::string num{"1234567890"};
+    std::pair<int, int> guess;
+    int x = (tahed.find(sisend.at(0)) != -1) ? static_cast<int>(tahed.find(sisend.at(0))) : 9999;
+    int y = (num.find(sisend.at(1)) != -1) ? static_cast<int>(num.find(sisend.at(1))) : 9999;
+    guess.first = x;
+    guess.second = y;
+
+    return guess;
+}
+
+bool Board::isHittable(std::pair<int, int> guess) {
+    return !(&(this->coordid)[guess.second*10 + guess.first])->isHit;
+}
+
+void Board::FIREINTHEHOLE(std::pair<int, int> guess) {
+    FIREINTHEHOLE(guess.first, guess.second);
+}
+
+void Board::FIREINTHEHOLE(int x, int y) {
+    Coord* coord = (&(this->coordid)[y * 10 + x]);
+    coord->isHit = true;
+
+    if (coord->isHit && coord->isShip) {
+        for (int i = -1; i < 2; i+=2) {
+            for (int j = -1; j < 2; j+=2) {
+                if (x+i >= 0 && x+i <= 9 && y+j >= 0 && y+j <= 9)
+                FIREINTHEHOLE(x+i, y+j);
+            }
+        }
+    }
+}
+
+void Board::sinkShip(Board& board, Ship ship) {
+    for (Coord coord : ship.shipCoords) {
+        for (Coord boardCoord : board.coordid) {
+            if (Coord::isNeighbour(coord, boardCoord)) {
+                boardCoord.isHit = true;
+            }
+        }
     }
 }
 

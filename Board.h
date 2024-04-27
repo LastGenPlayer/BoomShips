@@ -9,7 +9,6 @@
 #include "Ship.h"
 
 
-
 class Board {
 public:
     std::vector<Ship> Ships;
@@ -19,9 +18,14 @@ public:
 
     Board();
     Board(std::vector<Ship> &ships, bool visible);
-    void addShip(Ship ship);
-    static bool isPlaceable(Ship ship, const std::vector<Ship>& boats);
+    void addShip(Ship);
+    static bool isPlaceable(Ship, const std::vector<Ship>&);
+    static std::pair<int, int> guessSpot(std::string);
+    bool isHittable(std::pair<int, int>);
+    void FIREINTHEHOLE(std::pair<int, int>);
+    void FIREINTHEHOLE(int, int);
 
+    static void sinkShip(Board&, Ship);
     friend std::ostream &operator<<(std::ostream &os, const Board &board);
 };
 

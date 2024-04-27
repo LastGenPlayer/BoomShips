@@ -9,15 +9,15 @@
 
 class Game {
 public:
-    Board board1;
-    Board board2;
+    Board *board1;
+    Board *board2;
+    Board *board2guess;
 
     Game();
     void selfBoard(std::string &sisend);
     void playGame();
-    void randomBoard();
+    void randomBoard(Board*);
     static std::string randomCoord();
-    void guessSpot(std::string koht);
 
 };
 

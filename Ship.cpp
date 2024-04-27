@@ -15,8 +15,8 @@ Ship::Ship(int x, int y, int ship_length, bool is_horizontal) : shipLength(ship_
 Ship::Ship(std::string sisend, int lenght) {
     std::string tahed{"ABCDEFGHIJ"};
     std::string num{"1234567890"};
-    int x = static_cast<int>(tahed.find(sisend.at(0)));
-    int y = static_cast<int>(num.find(sisend.at(1)));
+    int x = (tahed.find(sisend.at(0)) != -1) ? static_cast<int>(tahed.find(sisend.at(0))) : 9999;
+    int y = (num.find(sisend.at(1)) != -1) ? static_cast<int>(num.find(sisend.at(1))) : 9999;
     //int y = (int) sisend.at(1) - 49; // A6h
     bool hori = (sisend.at(2) == 'h');
     shipMaker(x, y, lenght, hori);
@@ -51,16 +51,17 @@ std::ostream & operator<<(std::ostream &os, const Ship &obj) {
 
 bool Ship::isSunk() {
     for (int i = 0; i < this->shipLength; i++) {
-        if (!this->shipCoords.at(i).isHit) {
-            return false;
+        std::cout << this->shipCoords[i];
+        if (this->shipCoords[i].isHit) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool Ship::onBoard() {
     for (Coord P: this->shipCoords) {
-        if ((P.x > 10) || (P.y > 10)) {
+        if ((P.x == 10) || (P.y == 10)) {
             return false;
         }
     }
