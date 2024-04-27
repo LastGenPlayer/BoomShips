@@ -14,8 +14,10 @@ Ship::Ship(int x, int y, int ship_length, bool is_horizontal) : shipLength(ship_
 
 Ship::Ship(std::string sisend, int lenght) {
     std::string tahed{"ABCDEFGHIJ"};
+    std::string num{"1234567890"};
     int x = static_cast<int>(tahed.find(sisend.at(0)));
-    int y = static_cast<int>(sisend.at(1)); // A6h
+    int y = static_cast<int>(num.find(sisend.at(1)));
+    //int y = (int) sisend.at(1) - 49; // A6h
     bool hori = (sisend.at(2) == 'h');
     shipMaker(x, y, lenght, hori);
 }

@@ -29,9 +29,9 @@ Board::Board(std::vector<Ship> &ships, bool visible) : Ships(ships), visible(vis
 }
 
 std::ostream &operator<<(std::ostream &os, const Board &board) {
-    os << "  A B C D E F G I J K\n1 ";
     int i{0};
-    if (board.visible) {
+    if (!board.visible) {
+        os << "   A B C D E F G H I J\n1  ";
         for (Coord asi : board.coordid) {
             if (asi.isShip) {
                 os << "@ ";
@@ -41,16 +41,16 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
             }
             i++;
             if (i%10 == 0 && i/10 < 10){
-                os << '\n' << ((i/10)+1);
-                if ((i/10)+1 != 10) {
-                    os << " ";
-                }
+                os << '\n' << ((i/10)+1)%10 << "  ";
             }
         }
     }
+    os << '\n';
+    /*
     for (Coord asi : board.coordid) {
         os << asi << '\n';
     }
+     */
     return os;
 }
 
@@ -68,6 +68,13 @@ bool Board::isPlaceable(Ship ship, const std::vector<Ship>& boats) {
         }
     }
     return true;
+}
+
+void Board::addShip(Ship ship) {
+    this->Ships.push_back(ship);
+    for (Coord coord : ship.shipCoords) {
+        coordid[coord.y*10 + coord.x] = coord;
+    }
 }
 
 
