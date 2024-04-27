@@ -46,3 +46,19 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
     return os;
      **/
 }
+
+bool Board::isPlaceable(Ship ship, std::vector<Ship> boats) {
+    if (!ship.onBoard()) {
+        return false;
+    }
+    for (Ship boat : boats) {
+        for (Coord boatCoord : boat.shipCoords) {
+            for (Coord shipCoord : ship.shipCoords) {
+                if (Coord::isNeighbour(boatCoord, shipCoord)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}

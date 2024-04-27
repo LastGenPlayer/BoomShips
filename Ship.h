@@ -7,6 +7,7 @@
 #include "Coords.h"
 #include <ostream>
 #include <vector>
+#include <string>
 
 class Ship {
 public:
@@ -14,7 +15,9 @@ public:
     std::vector<Coord> shipCoords;
 
     Ship(int x, int y, int ship_length, bool is_horizontal);
+    Ship(std::string sisend);
     friend std::ostream & operator<<(std::ostream &os, const Ship &obj);
+    bool onBoard();
     bool isSunk();
     bool onBoard();
 };
