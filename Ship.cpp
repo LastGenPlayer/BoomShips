@@ -39,24 +39,20 @@ void Ship::shipMaker(int x, int y, int ship_length, bool is_horizontal) {
 
 std::ostream & operator<<(std::ostream &os, const Ship &obj) {
     os << obj.shipLength << '\n';
-    for (auto coord: obj.shipCoords) {
-        os << coord.x << ' '
-           << coord.y << ' '
-           << std::boolalpha
-           << coord.isHit << ' '
-           << coord.isShip << '\n';
+    for (Coord coord: obj.shipCoords) {
+        os << coord << '\n';
     }
     return os;
 }
 
 bool Ship::isSunk() {
-    for (int i = 0; i < this->shipLength; i++) {
-        std::cout << this->shipCoords[i];
-        if (this->shipCoords[i].isHit) {
-            return true;
+    for (Coord coord : this->shipCoords) {
+        //std::cout << this->shipCoords[i];
+        if (!coord.isHit) {
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 bool Ship::onBoard() {

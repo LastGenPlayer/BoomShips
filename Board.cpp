@@ -79,7 +79,7 @@ bool Board::isPlaceable(Ship ship, const std::vector<Ship>& boats) {
 void Board::addShip(Ship ship) {
     this->Ships.push_back(ship);
     for (Coord coord : ship.shipCoords) {
-        (coordid[coord.y*10 + coord.x]) = coord;
+        coordid[coord.y*10 + coord.x] = coord;
     }
 }
 
@@ -115,11 +115,19 @@ void Board::FIREINTHEHOLE(int x, int y) {
             }
         }
     }
+    for (Ship& ship : this->Ships) {
+        for (Coord& coord : ship.shipCoords) {
+            if (x == coord.x && y == coord.y) {
+                coord.isHit = true;
+                break;
+            }
+        }
+    }
 }
 
 void Board::sinkShip(Board& board, Ship ship) {
     for (Coord coord : ship.shipCoords) {
-        for (Coord boardCoord : board.coordid) {
+        for (Coord& boardCoord : board.coordid) {
             if (Coord::isNeighbour(coord, boardCoord)) {
                 boardCoord.isHit = true;
             }

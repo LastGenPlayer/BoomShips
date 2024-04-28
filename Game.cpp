@@ -35,13 +35,14 @@ std::string Game::randomCoord() {
 }
 
 
-Game::Game() : board1(new Board()),
-    board2(new Board())
+Game::Game() : board1(Board()),
+    board2(Board())
     {
     std::string sisend;
     randomBoard(board2);
     for (;;) {
         std::cout << "Kas soovite automaatselt genereeritud lauda või ise luua (a/i)?\n";
+        std::cout << "Beta note: Soovitame automaatse panna kuna vastase pakkumine pole implementeeritud\n";
         std::cin >> sisend;
         if (sisend == "i") {
             selfBoard(sisend);
@@ -61,8 +62,8 @@ void Game::selfBoard(std::string &sisend) {
             std::cin >>  sisend;
             if (sisend.size() == 3) {
                 Ship ship = *new Ship(sisend, lenght);
-                if (Board::isPlaceable(ship, board1->Ships)) {
-                    board1->addShip(ship);
+                if (Board::isPlaceable(ship, board1.Ships)) {
+                    board1.addShip(ship);
                     count--;
                     std::cout << board1;
                 }
@@ -71,12 +72,12 @@ void Game::selfBoard(std::string &sisend) {
     }
 }
 
-void Game::randomBoard(Board* board) {
+void Game::randomBoard(Board &board) {
     for (int lenght = 4; lenght > 0; lenght--) {
         for (int count = 5-lenght; count > 0;) {
             Ship ship = *new Ship(randomCoord(), lenght);
-            if (Board::isPlaceable(ship, (*board).Ships)) {
-                (*board).addShip(ship);
+            if (Board::isPlaceable(ship, (board).Ships)) {
+                board.addShip(ship);
                 count--;
             }
         }
@@ -84,35 +85,32 @@ void Game::randomBoard(Board* board) {
 }
 
 void Game::playGame() {
-    this->board2guess = new Board(board2->Ships, false);
+    this->board2guess = Board(board2.Ships, false);
     bool gamerMoment{true};
     while (gamerMoment) {
         while(true) {
-            std::cout << *board2guess << '\n';
-            std::cout << *board2;
+            //std::cout << board2 << '\n';
+            std::cout << board2guess << '\n';
             std::string sisend;
-            std::cout << "Paku auku:\n";
+            std::cout << "Paku ruut (nt. A3):\n";
             std::cin >> sisend;
 
             std::pair<int, int> guess = Board::guessSpot(sisend);
 
-            if (sisend.length() == 2 && board2->isHittable(guess)) {
-                board2->FIREINTHEHOLE(guess);
-                board2guess->FIREINTHEHOLE(guess);
+            if (sisend.length() == 2 && board2.isHittable(guess)) {
+                board2.FIREINTHEHOLE(guess);
+                board2guess.FIREINTHEHOLE(guess);
             }
             else {
                 break;
             }
 
             int board2ships{0};
-            for (Ship ship : board2->Ships) {
-                std::cout << ship << '\n';
-                if (!ship.isSunk()) {
-
-                }
-                else {
-                    Board::sinkShip(*board2, ship);
-                    Board::sinkShip(*board2guess, ship);
+            for (Ship ship : board2.Ships) {
+                //std::cout << ship.isSunk() << ship  << '\n';
+                if (ship.isSunk()) {
+                    Board::sinkShip(board2, ship);
+                    Board::sinkShip(board2guess, ship);
                     board2ships++;
                 }
             }
