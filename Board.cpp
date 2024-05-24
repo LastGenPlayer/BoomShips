@@ -31,8 +31,13 @@ Board::Board(std::vector<Ship> &ships, bool visible) : Ships(ships), visible(vis
 std::ostream &operator<<(std::ostream &os, const Board &board) {
     int i{0};
 
-    os << "   A B C D E F G H I J\n1  ";
+    os << "   A B C D E F G H I J";
     for (Coord asi : board.coordid) {
+
+        if (i%10 == 0 && i/10 < 10){
+            os << '\n' << ((i/10)+1)%10 << "  ";
+        }
+
         if (asi.isShip && !asi.isHit && board.visible) {
             os << "# ";
         }
@@ -46,9 +51,6 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
             os << ". ";
         }
         i++;
-        if (i%10 == 0 && i/10 < 10){
-            os << '\n' << ((i/10)+1)%10 << "  ";
-        }
     }
 
     os << '\n';
@@ -58,6 +60,44 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
     }
      */
     return os;
+}
+
+void Board::coutToString(Board& board1, Board& board2) {
+    bool teine = true;
+    Board temp{board1};
+
+    std::cout << "   A B C D E F G H I J      A B C D E F G H I J";
+    for (int i = 0; i <= 100; i++) {
+        if (i%10 == 0){
+            if (!teine && i >= 10) {
+                std::cout << "  ";
+                temp = board2;
+                i -= 10;
+            }
+            if (teine) {
+                temp = board1;
+                std::cout << '\n';
+            }
+            teine = !teine;
+            if (!teine && i == 100) break;
+            std::cout << ((i/10)+1)%10 << "  ";
+        }
+
+        Coord temp2{temp.coordid[i]};
+        if (temp2.isShip && !temp2.isHit && temp.visible) {
+            std::cout << "# ";
+        }
+        else if (temp2.isShip && temp2.isHit) {
+            std::cout << "@ ";
+        }
+        else if (!temp2.isShip && temp2.isHit) {
+            std::cout << "* ";
+        }
+        else {
+            std::cout << ". ";
+        }
+    }
+    std::cout << '\n';
 }
 
 bool Board::isPlaceable(Ship ship, const std::vector<Ship>& boats) {

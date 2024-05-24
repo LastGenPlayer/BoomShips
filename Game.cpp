@@ -89,8 +89,9 @@ void Game::playGame() {
     bool gamerMoment{true};
     while (gamerMoment) {
         while(true) {
-            //std::cout << board2 << '\n';
-            std::cout << board2guess << '\n';
+            std::cout << board2 << '\n';
+            //std::cout << board2guess << '\n';
+            Board::coutToString(board2guess, board1);
             std::string sisend;
             std::cout << "Paku ruut (nt. A3):\n";
             std::cin >> sisend;
