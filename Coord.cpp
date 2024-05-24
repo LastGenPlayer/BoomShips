@@ -29,6 +29,19 @@ Coord::Coord(int x, int y, bool isShip):
     isShip(isShip){
 }
 
+Coord::Coord(std::string sis) : isHit(false), isShip(false) {
+    std::string tahed{"ABCDEFGHIJ"};
+    std::string num{"1234567890"};
+    int xa = (tahed.find(sis.at(0)) != -1) ? (int)(tahed.find(sis.at(0))) : -1;
+    int ya = (num.find(sis.at(1)) != -1) ? (int)(num.find(sis.at(1))) : -1;
+    this->x = xa;
+    this->y = ya;
+}
+
+bool Coord::isValid() {
+    return (x >= 0 && x < 10 && y >= 0 && y < 10);
+}
+
 /*
 class Coord {
 public:

@@ -96,29 +96,34 @@ void Game::playGame() {
             std::cout << "Paku ruut (nt. A3):\n";
             std::cin >> sisend;
 
-            std::pair<int, int> guess = Board::guessSpot(sisend);
+            Coord pakkumine = Coord(sisend);
 
-            if (sisend.length() == 2 && board2.isHittable(guess)) {
-                board2.FIREINTHEHOLE(guess);
-                board2guess.FIREINTHEHOLE(guess);
-            }
-            else {
-                break;
-            }
+            if(pakkumine.isValid()){
+                std::pair<int, int> guess = Board::guessSpot(sisend);
 
-            int board2ships{0};
-            for (Ship ship : board2.Ships) {
-                //std::cout << ship.isSunk() << ship  << '\n';
-                if (ship.isSunk()) {
-                    Board::sinkShip(board2, ship);
-                    Board::sinkShip(board2guess, ship);
-                    board2ships++;
+                if (sisend.length() == 2 && board2.isHittable(guess)) {
+                    board2.FIREINTHEHOLE(guess);
+                    board2guess.FIREINTHEHOLE(guess);
+                }
+                else {
+                    break;
+                }
+
+                int board2ships{0};
+                for (Ship ship : board2.Ships) {
+                    //std::cout << ship.isSunk() << ship  << '\n';
+                    if (ship.isSunk()) {
+                        Board::sinkShip(board2, ship);
+                        Board::sinkShip(board2guess, ship);
+                        board2ships++;
+                    }
+                }
+                if (board2ships == 10) {
+                    gamerMoment = false;
+                    break;
                 }
             }
-            if (board2ships == 10) {
-                gamerMoment = false;
-                break;
-            }
+
         }
     }
     std::cout << "Mäng läbi!";
