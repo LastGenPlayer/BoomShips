@@ -11,7 +11,7 @@
 #include <random>
 
 
-class AiPlayer : public Game {
+class AiPlayer : public Board {
 public:
     Board playerBoard;
     std::vector<std::pair<int, int>> targets;
