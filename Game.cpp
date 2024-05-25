@@ -88,7 +88,7 @@ void Game::randomBoard(Board &board) {
 void Game::playGame() {
     this->board2guess = Board(board2.Ships, false);
     bool gamerMoment{true};
-    AiPlayer AI(*this);
+    AiPlayer AI(board1);
     while (gamerMoment) {
         while(true) {
             std::cout << board2 << '\n';
@@ -99,7 +99,7 @@ void Game::playGame() {
             std::cin >> sisend;
 
             Coord pakkumine = Coord(sisend);
-            std::pair<int, int> AiGuess = AI.ProbabilityGuess();
+            std::pair<int, int> AiGuess = AI.RandomGuess();
             std::cout << AiGuess.first << AiGuess.second << '\n';
             if(pakkumine.isValid()){
                 std::pair<int, int> guess = Board::guessSpot(sisend);

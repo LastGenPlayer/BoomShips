@@ -31,7 +31,7 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
     else {
         guess = std::pair<int, int>{targets.back().first, targets.back().second};
     }
-    if (!currenGame.board1.isHittable(guess)) {
+    if (!board1.isHittable(guess)) {
         std::pair<int, int> possibleTargets[] {
             std::pair<int, int>{guess.first + 1, guess.second},
             std::pair<int, int>{guess.first - 1, guess.second},
@@ -41,7 +41,7 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
         for (std::pair<int, int> target : possibleTargets) {
             if (0 <= target.first && target.first <= 9 &&
                 0 <= target.second && target.second <= 9 &&
-                currenGame.board1.isHittable(target) &&
+                board1.isHittable(target) &&
                 contains(possibleTargets, 4, target))
                 {
                 targets.push_back(target);
@@ -52,7 +52,7 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
 }
 
 std::pair<int, int> AiPlayer::ProbabilityGuess() {
-    Board playerBoard = currenGame.board1;
+    Board playerBoard = board1;
     std::pair<int, int> guess;
     int heatMap[10][10]{};
 

@@ -13,11 +13,11 @@
 
 class AiPlayer : public Game {
 public:
-    Game currenGame;
+    Board playerBoard;
     std::vector<std::pair<int, int>> targets;
     bool isHunting;
 
-    explicit AiPlayer(Game game) : currenGame(game), targets({}), isHunting(false) {};
+    explicit AiPlayer(Board B) : playerBoard(B), targets({}), isHunting(false) {};
 
     std::pair<int, int> RandomGuess();
     std::pair<int, int> HuntingGuess();
