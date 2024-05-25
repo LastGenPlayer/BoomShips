@@ -21,6 +21,7 @@ public:
     void addShip(Ship);
     static void coutToString(Board&, Board&);
     bool isPlaceable(Ship);
+    bool isPlaceableAI(Ship);
     static std::pair<int, int> guessSpot(std::string);
     bool isHittable(std::pair<int, int>);
     void FIREINTHEHOLE(std::pair<int, int>);

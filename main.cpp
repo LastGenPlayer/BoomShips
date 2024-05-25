@@ -17,4 +17,8 @@ int main() {
 
     Game mang = *new Game();
     mang.playGame();
+
+    // Ship S1(1,1,3,true);
+    // Ship S2(2,2,3,true);
+    // std::cout << isIntersecting(S1, S2);
 }

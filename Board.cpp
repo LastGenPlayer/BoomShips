@@ -5,6 +5,8 @@
 #include "Board.h"
 #include "Ship.h"
 
+
+
 Board::Board() : visible(true) {
     for (int y = 0; y < 10; y++) {
         for (int x = 0; x < 10; x++) {
@@ -115,6 +117,16 @@ bool Board::isPlaceable(Ship ship) {
     }
     return true;
 }
+
+bool Board::isPlaceableAI(Ship ship) {
+    for (Coord shipCoord : ship.shipCoords) {
+        if (coordid[shipCoord.y*10 + shipCoord.x].isHit) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void Board::addShip(Ship ship) {
     this->Ships.push_back(ship);

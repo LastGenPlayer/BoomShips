@@ -6,6 +6,7 @@
 #include "Coord.h"
 #include <iostream>
 #include <string>
+#include <unordered_set>
 
 Ship::Ship(int x, int y, int ship_length, bool is_horizontal) : shipLength(ship_length) {
     shipMaker(x, y, ship_length, is_horizontal);
@@ -63,3 +64,15 @@ bool Ship::onBoard() {
     }
     return true;
 }
+
+bool isIntersecting(Ship S1, Ship S2) {
+    for (auto& coord1 : S1.shipCoords) {
+        for (auto& coord2 : S2.shipCoords) {
+            if (Coord::isNeighbour(coord1, coord2)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+

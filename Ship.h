@@ -20,6 +20,8 @@ public:
     friend std::ostream & operator<<(std::ostream &os, const Ship &obj);
     bool onBoard();
     bool isSunk();
+    bool isHit() const;
+    friend bool isIntersecting(Ship S1, Ship S2);
 };
 
 

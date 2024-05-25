@@ -12,4 +12,6 @@ add_executable(BoomShips main.cpp
         Game.h
         Coord.cpp
         Coord.h
+        AiPlayer.cpp
+        AiPlayer.h
 )
