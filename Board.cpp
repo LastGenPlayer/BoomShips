@@ -100,11 +100,11 @@ void Board::coutToString(Board& board1, Board& board2) {
     std::cout << '\n';
 }
 
-bool Board::isPlaceable(Ship ship, const std::vector<Ship>& boats) {
+bool Board::isPlaceable(Ship ship) {
     if (!ship.onBoard()) {
         return false;
     }
-    for (const Ship& boat : boats) {
+    for (const Ship& boat : Ships) {
         for (Coord boatCoord : boat.shipCoords) {
             for (Coord shipCoord : ship.shipCoords) {
                 if (Coord::isNeighbour(boatCoord, shipCoord)) {

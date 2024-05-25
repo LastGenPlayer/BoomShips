@@ -20,7 +20,7 @@ public:
     Board(std::vector<Ship> &ships, bool visible);
     void addShip(Ship);
     static void coutToString(Board&, Board&);
-    static bool isPlaceable(Ship, const std::vector<Ship>&);
+    bool isPlaceable(Ship);
     static std::pair<int, int> guessSpot(std::string);
     bool isHittable(std::pair<int, int>);
     void FIREINTHEHOLE(std::pair<int, int>);

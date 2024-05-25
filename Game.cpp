@@ -62,7 +62,7 @@ void Game::selfBoard(std::string &sisend) {
             std::cin >>  sisend;
             if (sisend.size() == 3) {
                 Ship ship = *new Ship(sisend, lenght);
-                if (Board::isPlaceable(ship, board1.Ships)) {
+                if (board1.isPlaceable(ship)) {
                     board1.addShip(ship);
                     count--;
                     std::cout << board1;
@@ -76,7 +76,7 @@ void Game::randomBoard(Board &board) {
     for (int lenght = 4; lenght > 0; lenght--) {
         for (int count = 5-lenght; count > 0;) {
             Ship ship = *new Ship(randomCoord(), lenght);
-            if (Board::isPlaceable(ship, (board).Ships)) {
+            if (board.isPlaceable(ship)) {
                 board.addShip(ship);
                 count--;
             }
