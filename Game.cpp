@@ -100,8 +100,6 @@ void Game::playGame() {
 
             if (sisend.size() == 2) {
                 Coord pakkumine = Coord(sisend);
-                std::pair<int, int> AiGuess = AI.StageOneGuess();
-                std::cout << AiGuess.first << AiGuess.second << '\n';
                 if(pakkumine.isValid()){
                     std::pair<int, int> guess = Board::guessSpot(sisend);
                     if (board2.isHittable(guess)) {
@@ -109,8 +107,8 @@ void Game::playGame() {
                         board2guess.FIREINTHEHOLE(guess);
 
                         if (!board2.coordid.at(guess.first*10+guess.second).isShip) {
+                            std::pair<int, int> AiGuess = AI.StageOneGuess();
                             while (board1.coordid.at(AiGuess.first*10+AiGuess.second).isShip) {
-                                board1.FIREINTHEHOLE(AiGuess);
                                 if (AI.stageOne) {
                                     AiGuess = AI.StageOneGuess();
                                 }
@@ -120,8 +118,9 @@ void Game::playGame() {
                                 else {
                                     AiGuess = AI.ProbabilityGuess();
                                 }
+                                board1.FIREINTHEHOLE(AiGuess);
                             }
-                            board1.FIREINTHEHOLE(AiGuess);
+                            std::cout << AiGuess.first << AiGuess.second << '\n';
                         }
                     }
                     else {

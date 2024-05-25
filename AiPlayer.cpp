@@ -169,11 +169,11 @@ std::pair<int, int> AiPlayer::StageOneGuess() {
 
     for (int i{}; i < stageOneBoards.size(); i++) {
         add = true;
-
-        for (const auto &ship: stageOneBoards[i].Ships) {
+        Board& board = stageOneBoards[i];
+        for (const auto &ship: board.Ships) {
             for (const auto &coord: ship.shipCoords) {
                 int coordI{coord.y * 10 + coord.x};
-                if (playerBoard.coordid.at(coordI).isHit && !playerBoard.coordid.at(coordI).isHit) {
+                if (playerBoard.coordid.at(coordI).isHit && !playerBoard.coordid.at(coordI).isShip) {
                     add = false;
                 }
                 else {
@@ -200,7 +200,7 @@ std::pair<int, int> AiPlayer::StageOneGuess() {
         }
     }
 
-    return std::pair<int, int>();
+    return guess;
 }
 
 
