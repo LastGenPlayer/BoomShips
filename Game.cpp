@@ -100,31 +100,43 @@ void Game::playGame() {
 
             if (sisend.size() == 2) {
                 Coord pakkumine = Coord(sisend);
-                std::pair<int, int> AiGuess = AI.ProbabilityGuess();
+                std::pair<int, int> AiGuess = AI.StageOneGuess();
                 std::cout << AiGuess.first << AiGuess.second << '\n';
                 if(pakkumine.isValid()){
                     std::pair<int, int> guess = Board::guessSpot(sisend);
                     if (board2.isHittable(guess)) {
                         board2.FIREINTHEHOLE(guess);
                         board2guess.FIREINTHEHOLE(guess);
-                        board1.FIREINTHEHOLE(AiGuess);
+
+                        if (!board2.coordid.at(guess.first*10+guess.second).isShip) {
+                            while (board1.coordid.at(AiGuess.first*10+AiGuess.second).isShip) {
+                                board1.FIREINTHEHOLE(AiGuess);
+                                if (AI.stageOne) {
+                                    AiGuess = AI.StageOneGuess();
+                                }
+                                else if (AI.isHunting) {
+                                    AiGuess = AI.HuntingGuess();
+                                }
+                                else {
+                                    AiGuess = AI.ProbabilityGuess();
+                                }
+                            }
+                            board1.FIREINTHEHOLE(AiGuess);
+                        }
                     }
                     else {
                         break;
                     }
-                    int board2ships{0};
-                    for (Ship ship : board2.Ships) {
-                        //std::cout << ship.isSunk() << ship  << '\n';
-                        if (ship.isSunk()) {
-                            Board::sinkShip(board2, ship);
-                            Board::sinkShip(board2guess, ship);
-                            board2ships++;
-                        }
-                    }
-                    if (board2ships == 10) {
-                        gamerMoment = false;
+
+                    if (allSunk(board1)) {
+                        std::cout << "Teie kaotasite\n";
                         break;
                     }
+                    if (allSunk(board2)) {
+                        std::cout << "Teie võitsite\n";
+                        break;
+                    }
+                    allSunk(board2guess);
                 }
             }
         }
@@ -132,6 +144,19 @@ void Game::playGame() {
     std::cout << "Mäng läbi!";
 }
 
+bool Game::allSunk(Board &board) {
+    int board2ships{0};
+    for (Ship ship : board.Ships) {
+        if (ship.isSunk()) {
+            Board::sinkShip(board, ship);
+            board2ships++;
+        }
+    }
+    if (board2ships == 10) {
+        return true;
+    }
+    return false;
+}
 
 
 

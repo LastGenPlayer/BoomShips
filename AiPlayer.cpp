@@ -83,11 +83,11 @@ std::pair<int, int> AiPlayer::ProbabilityGuess() {
     }
     std::cout << possibleShips.size();
 
-    std::vector<std::pair<Ship, Ship>> invalidShipPositions;
+    std::vector<std::pair<int, int>> invalidShipPositions;
     for (int i{}; i < possibleShips.size(); i++) {
         for (int j{i + 1}; j < possibleShips.size(); j++) {
             if (isIntersecting(possibleShips.at(i), possibleShips.at(j))) {
-                invalidShipPositions.push_back(std::pair(possibleShips.at(i), possibleShips.at(j)));
+                invalidShipPositions.push_back(std::pair(i, j));
             }
         }
     }
@@ -115,11 +115,11 @@ std::pair<int, int> AiPlayer::ProbabilityGuess() {
                 heatMap[shipCoord.x][shipCoord.y] += 1;
             }
         }
-        possibleBoards += int(candidateBoard.empty());
+        possibleBoards += int(!candidateBoard.empty());
     }
 
     int i{}, j{};
-    guess = {i, j};
+    guess = {0, 0};
     for (; i < 10; i++) {
         for (; j < 10; j++) {
             if (heatMap[i][j] > heatMap[guess.first][guess.second]) {
@@ -139,3 +139,71 @@ std::pair<int, int> AiPlayer::Guess() {
         ProbabilityGuess();
     }
 }
+
+void AiPlayer::stageOnePrep() {
+    for (int i{0}; i < 1000; i++) {
+        Board board{Board()};
+        randomBoard(board);
+        stageOneBoards.push_back(board);
+    }
+}
+
+
+void AiPlayer::randomBoard(Board &board) {
+    for (int lenght = 4; lenght > 0; lenght--) {
+        for (int count = 5-lenght; count > 0;) {
+            Ship ship = *new Ship(Game::randomCoord(), lenght);
+            if (board.isPlaceable(ship)) {
+                board.addShip(ship);
+                count--;
+            }
+        }
+    }
+}
+
+std::pair<int, int> AiPlayer::StageOneGuess() {
+    int heatMap[10][10]{};
+    int tempMap[10][10]{};
+    bool add{true};
+    std::vector<int> blacklist;
+
+    for (int i{}; i < stageOneBoards.size(); i++) {
+        add = true;
+
+        for (const auto &ship: stageOneBoards[i].Ships) {
+            for (const auto &coord: ship.shipCoords) {
+                int coordI{coord.y * 10 + coord.x};
+                if (playerBoard.coordid.at(coordI).isHit && !playerBoard.coordid.at(coordI).isHit) {
+                    add = false;
+                }
+                else {
+                    tempMap[coord.y][coord.x] += 1;
+                }
+            }
+        }
+        if (add) {
+            for (int j{}; j < 100; j++){
+                heatMap[j/10][j%10] += tempMap[j/10][j%10];
+            }
+        }
+        else {
+            blacklist.push_back(i);
+        }
+    }
+
+    std::pair<int, int>guess = {0, 0};
+    for (int i{}; i < 10; i++) {
+        for (int j{}; j < 10; j++) {
+            if (heatMap[i][j] > heatMap[guess.first][guess.second]) {
+                guess = {i, j};
+            }
+        }
+    }
+
+    return std::pair<int, int>();
+}
+
+
+
+
+

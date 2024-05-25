@@ -18,6 +18,7 @@ public:
     void playGame();
     static void randomBoard(Board&);
     static std::string randomCoord();
+    static bool allSunk(Board&);
 };
 
 
