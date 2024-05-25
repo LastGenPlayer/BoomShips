@@ -98,35 +98,35 @@ void Game::playGame() {
             std::cout << "Paku ruut (nt. A3):\n";
             std::cin >> sisend;
 
-            Coord pakkumine = Coord(sisend);
-            std::pair<int, int> AiGuess = AI.ProbabilityGuess();
-            std::cout << AiGuess.first << AiGuess.second << '\n';
-            if(pakkumine.isValid()){
-                std::pair<int, int> guess = Board::guessSpot(sisend);
-
-                if (sisend.length() == 2 && board2.isHittable(guess)) {
-                    board2.FIREINTHEHOLE(guess);
-                    board2guess.FIREINTHEHOLE(guess);
-                }
-                else {
-                    break;
-                }
-
-                int board2ships{0};
-                for (Ship ship : board2.Ships) {
-                    //std::cout << ship.isSunk() << ship  << '\n';
-                    if (ship.isSunk()) {
-                        Board::sinkShip(board2, ship);
-                        Board::sinkShip(board2guess, ship);
-                        board2ships++;
+            if (sisend.size() == 2) {
+                Coord pakkumine = Coord(sisend);
+                std::pair<int, int> AiGuess = AI.ProbabilityGuess();
+                std::cout << AiGuess.first << AiGuess.second << '\n';
+                if(pakkumine.isValid()){
+                    std::pair<int, int> guess = Board::guessSpot(sisend);
+                    if (board2.isHittable(guess)) {
+                        board2.FIREINTHEHOLE(guess);
+                        board2guess.FIREINTHEHOLE(guess);
+                        board1.FIREINTHEHOLE(AiGuess);
+                    }
+                    else {
+                        break;
+                    }
+                    int board2ships{0};
+                    for (Ship ship : board2.Ships) {
+                        //std::cout << ship.isSunk() << ship  << '\n';
+                        if (ship.isSunk()) {
+                            Board::sinkShip(board2, ship);
+                            Board::sinkShip(board2guess, ship);
+                            board2ships++;
+                        }
+                    }
+                    if (board2ships == 10) {
+                        gamerMoment = false;
+                        break;
                     }
                 }
-                if (board2ships == 10) {
-                    gamerMoment = false;
-                    break;
-                }
             }
-
         }
     }
     std::cout << "Mäng läbi!";

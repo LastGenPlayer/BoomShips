@@ -52,13 +52,12 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
 }
 
 std::pair<int, int> AiPlayer::ProbabilityGuess() {
-    Board playerBoard = playerBoard;
     std::pair<int, int> guess;
     int heatMap[10][10]{};
 
     std::vector<int> shipLength;
     for (auto& ship : playerBoard.Ships) {
-        shipLength.push_back(ship.shipLength);
+        shipLength.push_back(ship.shipCoords.size());
     }
     std::set difShipLength(shipLength.begin(), shipLength.end());
 
@@ -68,18 +67,21 @@ std::pair<int, int> AiPlayer::ProbabilityGuess() {
         for (int i{}; i < 10; i++) {
             for (int j{}; j < 10; j++) {
                 Ship hS(i, j, len, true);
-                Ship vS(i, j, len, false);
-                if (playerBoard.isPlaceableAI(hS)) {
+                if (hS.onBoard() && playerBoard.isPlaceableAI(hS)) {
                     possibleShips.push_back(hS);
                     possibleShipsOrganized[len].push_back(hS);
                 }
-                if (playerBoard.isPlaceableAI(vS)) {
-                    possibleShips.push_back(vS);
-                    possibleShipsOrganized[len].push_back(vS);
+                if (len > 1) {
+                    Ship vS(i, j, len, false);
+                    if (vS.onBoard() && playerBoard.isPlaceableAI(vS)) {
+                        possibleShips.push_back(vS);
+                        possibleShipsOrganized[len].push_back(vS);
+                    }
                 }
             }
         }
     }
+    std::cout << possibleShips.size();
 
     std::vector<std::pair<Ship, Ship>> invalidShipPositions;
     for (int i{}; i < possibleShips.size(); i++) {
