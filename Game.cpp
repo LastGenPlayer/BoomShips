@@ -91,6 +91,7 @@ void Game::playGame() {
     AiPlayer AI(board1);
     while (gamerMoment) {
         while(true) {
+            bool firstShot{true};
             std::cout << board2 << '\n';
             //std::cout << board2guess << '\n';
             Board::coutToString(board2guess, board1);
@@ -100,15 +101,16 @@ void Game::playGame() {
 
             if (sisend.size() == 2) {
                 Coord pakkumine = Coord(sisend);
+                std::pair<int, int> AiGuess{};
                 if(pakkumine.isValid()){
                     std::pair<int, int> guess = Board::guessSpot(sisend);
                     if (board2.isHittable(guess)) {
                         board2.FIREINTHEHOLE(guess);
                         board2guess.FIREINTHEHOLE(guess);
 
-                        if (!board2.coordid.at(guess.first*10+guess.second).isShip) {
-                            std::pair<int, int> AiGuess = AI.StageOneGuess();
-                            while (board1.coordid.at(AiGuess.first*10+AiGuess.second).isShip) {
+                        if (!board2.coordid.at(guess.second*10+guess.first).isShip) {
+                            while (board1.coordid.at(AiGuess.first*10+AiGuess.second).isShip || firstShot) {
+                                firstShot = false;
                                 if (AI.stageOne) {
                                     AiGuess = AI.StageOneGuess();
                                 }
@@ -118,13 +120,11 @@ void Game::playGame() {
                                 else {
                                     AiGuess = AI.ProbabilityGuess();
                                 }
+                                std::cout << AiGuess.first << AiGuess.second << '\n';
                                 board1.FIREINTHEHOLE(AiGuess);
+                                AI.playerBoard.FIREINTHEHOLE(AiGuess);
                             }
-                            std::cout << AiGuess.first << AiGuess.second << '\n';
                         }
-                    }
-                    else {
-                        break;
                     }
 
                     if (allSunk(board1)) {
@@ -158,5 +158,24 @@ bool Game::allSunk(Board &board) {
 }
 
 
+
+/*
+void Game::keepGuessing(std::pair<int, int>& AiGuess, AiPlayer& AI) {
+    if (AI.stageOne) {
+        AiGuess = AI.StageOneGuess();
+    }
+    else if (AI.isHunting) {
+        AiGuess = AI.HuntingGuess();
+    }
+    else {
+        AiGuess = AI.ProbabilityGuess();
+    }
+    std::cout << AiGuess.first << AiGuess.second << '\n';
+    board1.FIREINTHEHOLE(AiGuess);
+    AI.playerBoard.FIREINTHEHOLE(AiGuess);
+    if (board1.coordid.at(AiGuess.first*10+AiGuess.second).isShip) {
+        keepGuessing(AiGuess, AI);
+    }
+}*/
 
 

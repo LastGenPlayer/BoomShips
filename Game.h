@@ -6,6 +6,7 @@
 #define BOOMSHIPS_GAME_H
 
 #include "Board.h"
+#include "AiPlayer.h"
 
 class Game {
 public:
@@ -19,6 +20,8 @@ public:
     static void randomBoard(Board&);
     static std::string randomCoord();
     static bool allSunk(Board&);
+    std::pair<int, int> makeGuess();
+    //void keepGuessing(std::pair<int, int>&, AiPlayer);
 };
 
 

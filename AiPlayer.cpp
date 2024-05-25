@@ -163,38 +163,40 @@ void AiPlayer::randomBoard(Board &board) {
 
 std::pair<int, int> AiPlayer::StageOneGuess() {
     int heatMap[10][10]{};
-    int tempMap[10][10]{};
     bool add{true};
-    std::vector<int> blacklist;
-
     for (int i{}; i < stageOneBoards.size(); i++) {
         add = true;
         Board& board = stageOneBoards[i];
-        for (const auto &ship: board.Ships) {
-            for (const auto &coord: ship.shipCoords) {
-                int coordI{coord.y * 10 + coord.x};
-                if (playerBoard.coordid.at(coordI).isHit && !playerBoard.coordid.at(coordI).isShip) {
-                    add = false;
-                }
-                else {
-                    tempMap[coord.y][coord.x] += 1;
+        int tempMap[10][10]{};
+
+        if (!checkVector(blacklist, i)){
+            for (const auto &ship: board.Ships) {
+                for (const auto &coord: ship.shipCoords) {
+                    int coordI{coord.y * 10 + coord.x};
+                    if (playerBoard.coordid.at(coordI).isHit && !playerBoard.coordid.at(coordI).isShip) {
+                        add = false;
+                    }
+                    else if (!playerBoard.coordid.at(coordI).isHit) {
+                        tempMap[coord.y][coord.x] += 1;
+                    }
                 }
             }
-        }
-        if (add) {
-            for (int j{}; j < 100; j++){
-                heatMap[j/10][j%10] += tempMap[j/10][j%10];
+            if (add) {
+                for (int j{}; j < 100; j++){
+                    heatMap[j/10][j%10] += tempMap[j/10][j%10];
+                }
             }
-        }
-        else {
-            blacklist.push_back(i);
+            else {
+                blacklist.push_back(i);
+                break;
+            }
         }
     }
 
     std::pair<int, int>guess = {0, 0};
     for (int i{}; i < 10; i++) {
         for (int j{}; j < 10; j++) {
-            if (heatMap[i][j] > heatMap[guess.first][guess.second]) {
+            if (heatMap[i][j] > heatMap[guess.second][guess.first]) {
                 guess = {i, j};
             }
         }
@@ -202,6 +204,15 @@ std::pair<int, int> AiPlayer::StageOneGuess() {
 
     return guess;
 }
+
+bool AiPlayer::checkVector(std::vector<int> list, int j) {
+    for (const auto &item: list) {
+        if (j == item) return true;
+    }
+    return false;
+}
+
+
 
 
 
