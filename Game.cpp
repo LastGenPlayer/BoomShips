@@ -131,16 +131,18 @@ void Game::playGame() {
                             }
                         }
                     }
-                    if (AI.stageOneBoards.size() < 1500) {
-                        AI.stageOnePrep(200);
+                    if (AI.stageOneBoards.size() < 4000) {
+                        AI.stageOnePrep(250);
                     }
 
                     if (allSunk(board1)) {
                         std::cout << "Teie kaotasite\n";
+                        gamerMoment = false;
                         break;
                     }
                     if (allSunk(board2)) {
                         std::cout << "Teie võitsite\n";
+                        gamerMoment = false;
                         break;
                     }
                     allSunk(board2guess);
