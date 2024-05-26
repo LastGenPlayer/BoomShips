@@ -39,13 +39,9 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
     }
     // guess = {x, y}
     if (playerBoard.coordid.at(guess.second*10 + guess.first).isShip) {
-        std::pair<int, int> possibleTargets[]{};
+        std::pair<int, int> possibleTargets[4]{};
 
         if (!huntChecking) {
-            targets.erase(
-                    targets.cbegin() + 1 +
-                    playerBoard.coordid.at(targets[1].second*10 + targets[1].first).isShip
-                    , targets.cend());
             if (targets.size() > 2) huntV = false;
             else huntH = false;
         }
@@ -54,9 +50,17 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
             possibleTargets[0] = std::pair<int, int>{guess.first + 1, guess.second};
             possibleTargets[1] = std::pair<int, int>{guess.first - 1, guess.second};
         }
+        else {
+            possibleTargets[0] = std::pair<int, int>{-1, -1};
+            possibleTargets[1] = std::pair<int, int>{-1, -1};
+        }
         if (huntV) {
-            possibleTargets[2*huntV] = std::pair<int, int>{guess.first, guess.second + 1};
-            possibleTargets[2*huntV + 1] = std::pair<int, int>{guess.first, guess.second - 1};
+            possibleTargets[2] = std::pair<int, int>{guess.first, guess.second + 1};
+            possibleTargets[3] = std::pair<int, int>{guess.first, guess.second - 1};
+        }
+        else {
+            possibleTargets[2] = std::pair<int, int>{-1, -1};
+            possibleTargets[3] = std::pair<int, int>{-1, -1};
         }
 
         for (std::pair<int, int> target : possibleTargets) {
@@ -68,16 +72,20 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
                 targets.push_back(target);
                 }
         }
-        for (int i{}; i < targets.size(); i++) {
-            if (!playerBoard.isHittable(targets[i])) {
-                targets.erase(targets.cbegin()+i);
-                i--;
-            }
+    }
+    for (int i{}; i < targets.size(); i++) {
+        if (!playerBoard.isHittable(targets[i])) {
+            targets.erase(targets.cbegin()+i);
+            i--;
         }
     }
-    targets.erase(targets.cbegin(), targets.cbegin());
-    guess = {targets[0]};
+
+    guess = targets[0];
     if (playerBoard.coordid.at(guess.second*10 + guess.first).isShip) huntChecking = false;
+    if (targets.empty()) {
+        isHunting = false;
+        guess = RandomGuess();
+    }
     return guess;
 }
 

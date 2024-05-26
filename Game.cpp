@@ -123,9 +123,10 @@ void Game::playGame() {
                                 //std::cout << AiGuess.second << AiGuess.first << '\n';
                                 board1.FIREINTHEHOLE(AiGuess);
                                 AI.playerBoard.FIREINTHEHOLE(AiGuess);
+                                allSunk(AI.playerBoard);
                                 if (board1.coordid.at(AiGuess.second*10+AiGuess.first).isShip) {
+                                    if (!AI.isHunting) AI.targets.push_back(AiGuess);
                                     AI.isHunting = true;
-                                    AI.targets.push_back(AiGuess);
                                 }
                             }
                         }
