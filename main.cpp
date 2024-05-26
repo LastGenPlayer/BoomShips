@@ -3,6 +3,10 @@
 #include "Board.h"
 #include "Game.h"
 
+/**
+ * mängu tegemine ja käivitamine
+ * @return
+ */
 
 int main() {
     /*

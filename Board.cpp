@@ -6,7 +6,10 @@
 #include "Ship.h"
 
 
-
+/**
+ * laua konstruktor. Loob vektori 100 koordinaadiga (10x10)
+ * miks me nii tegime...
+ */
 Board::Board() : visible(true) {
     for (int y = 0; y < 10; y++) {
         for (int x = 0; x < 10; x++) {
@@ -15,6 +18,11 @@ Board::Board() : visible(true) {
     }
 }
 
+/**
+ * Laua loomine koos laeva asukohtadega
+ * @param ships
+ * @param visible
+ */
 Board::Board(std::vector<Ship> &ships, bool visible) : Ships(ships), visible(visible) {
     if (coordid.empty()) {
         for (int y = 0; y < 10; y++) {
@@ -30,6 +38,12 @@ Board::Board(std::vector<Ship> &ships, bool visible) : Ships(ships), visible(vis
     }
 }
 
+/**
+ * toString
+ * @param os
+ * @param board
+ * @return
+ */
 std::ostream &operator<<(std::ostream &os, const Board &board) {
     int i{0};
 
@@ -64,6 +78,11 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
     return os;
 }
 
+/**
+ * kaks kõrvuti lauda "toString" (tegelt prindib funktsioonis juba)
+ * @param board1
+ * @param board2
+ */
 void Board::coutToString(Board& board1, Board& board2) {
     bool teine = true;
     Board temp{board1};
@@ -102,6 +121,11 @@ void Board::coutToString(Board& board1, Board& board2) {
     std::cout << '\n';
 }
 
+/**
+ * kontroll, kas laeva saab asetada lauale
+ * @param ship
+ * @return
+ */
 bool Board::isPlaceable(Ship ship) {
     if (!ship.onBoard()) {
         return false;
@@ -118,6 +142,11 @@ bool Board::isPlaceable(Ship ship) {
     return true;
 }
 
+/**
+ * AI pakkumise jaoks kontroll
+ * @param ship
+ * @return
+ */
 bool Board::isPlaceableAI(Ship ship) {
     for (Coord shipCoord : ship.shipCoords) {
         if (coordid[shipCoord.y*10 + shipCoord.x].isHit) {
@@ -127,7 +156,10 @@ bool Board::isPlaceableAI(Ship ship) {
     return true;
 }
 
-
+/**
+ * lisab laeva lauale
+ * @param ship
+ */
 void Board::addShip(Ship ship) {
     this->Ships.push_back(ship);
     for (Coord coord : ship.shipCoords) {

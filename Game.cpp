@@ -8,7 +8,10 @@
 #include "Game.h"
 #include "Ship.h"
 #include "AiPlayer.h"
-
+/**
+ * genereerib suvalise asukoha laual
+ * @return stringi kujul koordinaat
+ */
 std::string Game::randomCoord() {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -35,7 +38,9 @@ std::string Game::randomCoord() {
     return firstCoord[num1] + std::to_string(num2 - 1) + horizontalOrVertical[num3 % 2];
 }
 
-
+/**
+ * Game construktor. Küsib kasutajalt, et kast teeb ise laua (why?) või genereeritakse talle
+ */
 Game::Game() : board1(Board()),
     board2(Board())
     {
@@ -43,7 +48,6 @@ Game::Game() : board1(Board()),
     randomBoard(board2);
     for (;;) {
         std::cout << "Kas soovite automaatselt genereeritud lauda või ise luua (a/i)?\n";
-        std::cout << "Beta note: Soovitame automaatse panna kuna vastase pakkumine pole implementeeritud\n";
         std::cin >> sisend;
         if (sisend == "i") {
             selfBoard(sisend);
@@ -55,7 +59,10 @@ Game::Game() : board1(Board()),
         }
     }
 }
-
+/**
+ * kasutaja loob enda laua, asetades laevad vastavatele kohtadele
+ * @param sisend - sisend muutuja... miks? ei tea :)
+ */
 void Game::selfBoard(std::string &sisend) {
     for (int lenght = 4; lenght > 0; lenght--) {
         for (int count = 5-lenght; count > 0;) {
@@ -72,7 +79,10 @@ void Game::selfBoard(std::string &sisend) {
         }
     }
 }
-
+/**
+ * suvalise laua genereerimine
+ * @param board - laud, kus on laevad suvaliselt asetatud
+ */
 void Game::randomBoard(Board &board) {
     for (int lenght = 4; lenght > 0; lenght--) {
         for (int count = 5-lenght; count > 0;) {
@@ -85,14 +95,17 @@ void Game::randomBoard(Board &board) {
     }
 }
 
+/**
+ * põhi funktsioon mängu jaoks
+ */
 void Game::playGame() {
-    this->board2guess = Board(board2.Ships, false);
-    bool gamerMoment{true};
+    this->board2guess = Board(board2.Ships, false); // pakkumis laud
+    bool gamerMoment{true}; // kas mäng käib veel
     AiPlayer AI(board1);
     while (gamerMoment) {
         while(true) {
             bool firstShot{true};
-            std::cout << board2 << '\n';
+            //std::cout << board2 << '\n';
             //std::cout << board2guess << '\n';
             Board::coutToString(board2guess, board1);
             std::string sisend;
@@ -131,8 +144,11 @@ void Game::playGame() {
                             }
                         }
                     }
-                    if (AI.stageOneBoards.size() < 4000) {
+                    if (AI.stageOneBoards.size() < 4000) { //esialgsete pakkumiste jaoks
                         AI.stageOnePrep(250);
+                        if (AI.blacklist.size() > AI.stageOneBoards.size()*0.9) {
+                            AI.stageOne = false;
+                        }
                     }
 
                     if (allSunk(board1)) {

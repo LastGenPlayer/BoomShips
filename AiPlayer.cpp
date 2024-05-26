@@ -13,7 +13,10 @@ bool contains(const T* array, size_t size, const T& element) {
     }
     return false;
 }
-
+/**
+ * pakub täiesti suvalise ruudu. Kui on pakutud siis läheb edasi kuni leiab tühja ruudu
+ * @return
+ */
 std::pair<int, int> AiPlayer::RandomGuess() {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -28,6 +31,10 @@ std::pair<int, int> AiPlayer::RandomGuess() {
     return std::pair<int, int>{num1, num2};
 }
 
+/**
+ * kui saab laevale pihta, siis hakkab jahtima vastavat laeva
+ * @return - koordinaat arvupaarina
+ */
 std::pair<int, int> AiPlayer::HuntingGuess() {
     std::pair<int, int> guess;
     if (targets.empty()) {
@@ -90,7 +97,10 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
 }
 
 
-
+/**
+ * genereerib heatmap'e, kuhu pakkuda
+ * @return
+ */
 
 std::pair<int, int> AiPlayer::ProbabilityGuess() {
     std::pair<int, int> guess;
@@ -172,6 +182,10 @@ std::pair<int, int> AiPlayer::ProbabilityGuess() {
     return guess;
 }
 
+/**
+ * genereerib mingi koguse suvalisi laudu, et teha heatmap stageOneGuess()-ile
+ * @param amount
+ */
 void AiPlayer::stageOnePrep(int amount) {
     for (int i{0}; i < amount; i++) {
         Board board{Board()};
@@ -180,6 +194,10 @@ void AiPlayer::stageOnePrep(int amount) {
     }
 }
 
+/**
+ * suvalise laua genereerimine
+ * @param board
+ */
 
 void AiPlayer::randomBoard(Board &board) {
     for (int lenght = 4; lenght > 0; lenght--) {
@@ -193,6 +211,10 @@ void AiPlayer::randomBoard(Board &board) {
     }
 }
 
+/**
+ * algse pakkumise koordinaadi genereerimine
+ * @return
+ */
 std::pair<int, int> AiPlayer::StageOneGuess() {
     int heatMap[10][10]{};
     bool add{true};
@@ -235,7 +257,12 @@ std::pair<int, int> AiPlayer::StageOneGuess() {
 
     return guess;
 }
-
+/**
+ * kas element on vectoris
+ * @param list - antud list
+ * @param j - element
+ * @return
+ */
 bool AiPlayer::checkVector(std::vector<int> list, int j) {
     for (const auto &item: list) {
         if (j == item) return true;
