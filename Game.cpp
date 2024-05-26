@@ -109,22 +109,29 @@ void Game::playGame() {
                         board2guess.FIREINTHEHOLE(guess);
 
                         if (!board2.coordid.at(guess.second*10+guess.first).isShip) {
-                            while (board1.coordid.at(AiGuess.first*10+AiGuess.second).isShip || firstShot) {
+                            while (board1.coordid.at(AiGuess.second*10+AiGuess.first).isShip || firstShot) {
                                 firstShot = false;
-                                if (AI.stageOne) {
-                                    AiGuess = AI.StageOneGuess();
-                                }
-                                else if (AI.isHunting) {
+                                if (AI.isHunting) {
                                     AiGuess = AI.HuntingGuess();
+                                }
+                                else if (AI.stageOne) {
+                                    AiGuess = AI.StageOneGuess();
                                 }
                                 else {
                                     AiGuess = AI.ProbabilityGuess();
                                 }
-                                std::cout << AiGuess.first << AiGuess.second << '\n';
+                                //std::cout << AiGuess.second << AiGuess.first << '\n';
                                 board1.FIREINTHEHOLE(AiGuess);
                                 AI.playerBoard.FIREINTHEHOLE(AiGuess);
+                                if (board1.coordid.at(AiGuess.second*10+AiGuess.first).isShip) {
+                                    AI.isHunting = true;
+                                    AI.targets.push_back(AiGuess);
+                                }
                             }
                         }
+                    }
+                    if (AI.stageOneBoards.size() < 1500) {
+                        AI.stageOnePrep(200);
                     }
 
                     if (allSunk(board1)) {

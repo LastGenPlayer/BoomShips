@@ -13,8 +13,23 @@ int main() {
     std::vector<Ship> ships{S, S2};
     Board a(ships, true);
     std::cout << a << '\n';
-    */
 
+
+    std::vector<int> asi;
+    asi.push_back(1);
+    asi.push_back(2);
+    asi.push_back(3);
+
+    std::cout << asi[0];
+    std::cout << asi[1];
+    std::cout << asi[2] << '\n';
+
+    asi.erase(asi.cbegin()+1, asi.cend()-1);
+    std::cout << asi.size()<< '\n';
+    std::cout << asi[0];
+    std::cout << asi[1];
+    std::cout << asi[2] << '\n';
+*/
     Game mang = *new Game();
     mang.playGame();
 

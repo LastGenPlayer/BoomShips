@@ -15,22 +15,21 @@ class AiPlayer : public Board {
 public:
     Board playerBoard;
     std::vector<std::pair<int, int>> targets;
-    bool isHunting;
+    bool isHunting, huntH, huntV, huntChecking;
     bool stageOne;
     std::vector<Board> stageOneBoards;
     std::vector<int> blacklist;
 
-    explicit AiPlayer(Board B) : playerBoard(B), targets({}), isHunting(false), stageOne(true) {
-        stageOnePrep();
+    explicit AiPlayer(Board B) : playerBoard(B), targets({}), isHunting(false), huntH(true), huntV(true), huntChecking(true), stageOne(true) {
+        stageOnePrep(500);
     };
 
     std::pair<int, int> RandomGuess();
     std::pair<int, int> StageOneGuess();
     std::pair<int, int> HuntingGuess();
     std::pair<int, int> ProbabilityGuess();
-    std::pair<int, int> Guess();
     static void randomBoard(Board&);
-    void stageOnePrep();
+    void stageOnePrep(int);
     bool checkVector(std::vector<int>, int);
 
 };

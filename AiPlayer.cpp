@@ -20,24 +20,45 @@ std::pair<int, int> AiPlayer::RandomGuess() {
     std::uniform_int_distribution<> dis(0, 9);
     int num1 = dis(gen);
     int num2 = dis(gen);
+    while (playerBoard.coordid.at(num1*10+num2).isHit) {
+        int temp = (num1 * 10 + num2 + 1) %100;
+        num1 = temp/10;
+        num2 = temp%10;
+    }
     return std::pair<int, int>{num1, num2};
 }
 
 std::pair<int, int> AiPlayer::HuntingGuess() {
     std::pair<int, int> guess;
-    if (!targets.empty()) {
+    if (targets.empty()) {
+        isHunting = false;
         guess = RandomGuess();
     }
     else {
-        guess = std::pair<int, int>{targets.back().first, targets.back().second};
+        guess = {targets[0]};
     }
-    if (!playerBoard.isHittable(guess)) {
-        std::pair<int, int> possibleTargets[] {
-            std::pair<int, int>{guess.first + 1, guess.second},
-            std::pair<int, int>{guess.first - 1, guess.second},
-            std::pair<int, int>{guess.first, guess.second + 1},
-            std::pair<int, int>{guess.first, guess.second - 1}
-        };
+    // guess = {x, y}
+    if (playerBoard.coordid.at(guess.second*10 + guess.first).isShip) {
+        std::pair<int, int> possibleTargets[]{};
+
+        if (!huntChecking) {
+            targets.erase(
+                    targets.cbegin() + 1 +
+                    playerBoard.coordid.at(targets[1].second*10 + targets[1].first).isShip
+                    , targets.cend());
+            if (targets.size() > 2) huntV = false;
+            else huntH = false;
+        }
+
+        if (huntH) {
+            possibleTargets[0] = std::pair<int, int>{guess.first + 1, guess.second};
+            possibleTargets[1] = std::pair<int, int>{guess.first - 1, guess.second};
+        }
+        if (huntV) {
+            possibleTargets[2*huntV] = std::pair<int, int>{guess.first, guess.second + 1};
+            possibleTargets[2*huntV + 1] = std::pair<int, int>{guess.first, guess.second - 1};
+        }
+
         for (std::pair<int, int> target : possibleTargets) {
             if (0 <= target.first && target.first <= 9 &&
                 0 <= target.second && target.second <= 9 &&
@@ -47,9 +68,21 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
                 targets.push_back(target);
                 }
         }
+        for (int i{}; i < targets.size(); i++) {
+            if (!playerBoard.isHittable(targets[i])) {
+                targets.erase(targets.cbegin()+i);
+                i--;
+            }
+        }
     }
+    targets.erase(targets.cbegin(), targets.cbegin());
+    guess = {targets[0]};
+    if (playerBoard.coordid.at(guess.second*10 + guess.first).isShip) huntChecking = false;
     return guess;
 }
+
+
+
 
 std::pair<int, int> AiPlayer::ProbabilityGuess() {
     std::pair<int, int> guess;
@@ -131,17 +164,8 @@ std::pair<int, int> AiPlayer::ProbabilityGuess() {
     return guess;
 }
 
-std::pair<int, int> AiPlayer::Guess() {
-    if (isHunting) {
-        HuntingGuess();
-    }
-    else {
-        ProbabilityGuess();
-    }
-}
-
-void AiPlayer::stageOnePrep() {
-    for (int i{0}; i < 1000; i++) {
+void AiPlayer::stageOnePrep(int amount) {
+    for (int i{0}; i < amount; i++) {
         Board board{Board()};
         randomBoard(board);
         stageOneBoards.push_back(board);
@@ -188,16 +212,15 @@ std::pair<int, int> AiPlayer::StageOneGuess() {
             }
             else {
                 blacklist.push_back(i);
-                break;
             }
         }
     }
 
     std::pair<int, int>guess = {0, 0};
-    for (int i{}; i < 10; i++) {
-        for (int j{}; j < 10; j++) {
-            if (heatMap[i][j] > heatMap[guess.second][guess.first]) {
-                guess = {i, j};
+    for (int y{}; y < 10; y++) {
+        for (int x{}; x < 10; x++) {
+            if (heatMap[y][x] > heatMap[guess.second][guess.first]) {
+                guess = {x, y};
             }
         }
     }
