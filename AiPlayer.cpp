@@ -41,7 +41,7 @@ std::pair<int, int> AiPlayer::HuntingGuess() {
     if (playerBoard.coordid.at(guess.second*10 + guess.first).isShip) {
         std::pair<int, int> possibleTargets[4]{};
 
-        if (!huntChecking) {
+        if (!huntChecking && huntH && huntV) {
             if (targets.size() > 2) huntV = false;
             else huntH = false;
         }
