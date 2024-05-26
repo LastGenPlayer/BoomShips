@@ -136,11 +136,13 @@ void Game::playGame() {
                     }
 
                     if (allSunk(board1)) {
+                        Board::coutToString(board2guess, board1);
                         std::cout << "Teie kaotasite\n";
                         gamerMoment = false;
                         break;
                     }
                     if (allSunk(board2)) {
+                        Board::coutToString(board2guess, board1);
                         std::cout << "Teie võitsite\n";
                         gamerMoment = false;
                         break;
